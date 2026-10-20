@@ -2,41 +2,43 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{formulario.titulo}">Formulario de alta</title>
+    <title>Formulario de alta</title>
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
 <body class="claro">
 <div class="form-card">
-    <h1 th:text="#{formulario.titulo}">Formulario de alta</h1>
+    <h1>Formulario de alta</h1>
 
-    <!-- th:object enlaza el formulario con el DTO "usuario" del Model. -->
-    <form th:action="@{/alta}" th:object="${usuario}" method="post">
-        <label for="nombre" th:text="#{campo.nombre}">Nombre</label>
-        <input type="text" th:field="*{nombre}" th:errorclass="campo-error"
-               minlength="2" maxlength="50" required>
-        <!-- BindingResult guarda los errores por campo y th:errors los muestra junto a su control. -->
-        <div class="error-msg" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error en el nombre</div>
+    <!-- Solo se pinta si existe mensajeError -->
+    <div class="error-msg" th:if="${mensajeError}" th:text="${mensajeError}">Mensaje de error por defecto</div>
 
-        <label for="email" th:text="#{campo.email}">Email</label>
-        <input type="email" th:field="*{email}" th:errorclass="campo-error" required>
-        <div class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error en el email</div>
+    <form th:action="@{/alta}" method="post">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" th:value="${nombre}">
 
-        <label for="tecnologia" th:text="#{campo.tecnologia}">Tecnología</label>
-        <select th:field="*{tecnologia}" th:errorclass="campo-error" required>
-            <option value="" th:text="#{formulario.tecnologia.selecciona}">Selecciona una tecnología</option>
-            <!-- Las opciones las carga OpcionesService desde tecnologias.txt. -->
-            <option th:each="t : ${tecnologias}" th:value="${t}" th:text="${t}">Tecnología</option>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" th:value="${email}" required>
+
+        <label for="tecnologia">Tecnología con la que más te gustaria trabajar</label>
+        <select id="tecnologia" name="tecnologia">
+            <!-- th:each sustituye a <c:forEach>. th:selected mantiene la opción elegida si volvemos con error -->
+            <option th:each="t : ${tecnologias}"
+                    th:value="${t}"
+                    th:text="${t}"
+                    th:selected="${t == tecnologia}">Tecnología</option>
         </select>
-        <div class="error-msg" th:if="${#fields.hasErrors('tecnologia')}" th:errors="*{tecnologia}">Selecciona una tecnología</div>
 
-        <label for="niveles" th:text="#{campo.niveles}">Nivel</label>
-        <!-- th:field genera el name correcto (niveles) y conserva todas las opciones seleccionadas. -->
-        <select th:field="*{niveles}" multiple required>
-            <option th:each="n : ${listaNiveles}" th:value="${n}" th:text="${n}">Nivel</option>
+        <label for="nivel">Nivel (puedes marcar varios)</label>
+        <select id="nivel" name="nivel" multiple>
+            <!-- Pista: #lists.contains(lista, elemento) -->
+            <option th:each="n : ${listaNiveles}"
+                    th:value="${n}"
+                    th:text="${n}"
+                    th:selected="${nivelesSeleccionados != null
+                    and #lists.contains(nivelesSeleccionados, n)}" >Nivel</option>
         </select>
-        <div class="error-msg" th:if="${#fields.hasErrors('niveles')}" th:errors="*{niveles}">Selecciona al menos un nivel</div>
 
-        <button type="submit" th:text="#{formulario.enviar}">Enviar</button>
+        <button type="submit">Enviar</button>
     </form>
 </div>
 </body>

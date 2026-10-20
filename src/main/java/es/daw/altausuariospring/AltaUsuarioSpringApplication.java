@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AltaUsuarioSpringApplication {
 
     public static void main(String[] args) {
-        // Spring Boot arranca la aplicación y su servidor Tomcat embebido; no se despliega un WAR manualmente.
+
         SpringApplication.run(AltaUsuarioSpringApplication.class, args);
     }
 
