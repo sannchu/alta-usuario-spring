@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{error.titulo}">Ha ocurrido un error</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="oscuro">
+<div class="card">
+    <div class="error-icon">&#9888;</div>
+    <h1 th:text="#{error.encabezado}">Vaya, algo ha fallado</h1>
+    <!-- GlobalExceptionHandler coloca el mensaje de la excepción en el modelo con esta clave. -->
+    <p th:text="${mensajeError}">No se han podido cargar las opciones.</p>
+    <a class="volver" th:href="@{/}" th:text="#{confirmacion.volver}">&larr; Volver al inicio</a>
+</div>
+</body>
+</html>

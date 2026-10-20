@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{confirmacion.titulo}">Alta correcta</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="oscuro">
+<div class="card">
+    <div class="ok">&#10003;</div>
+    <!-- th:text escapa los datos; el HTML enviado en un campo se muestra como texto, no se ejecuta. -->
+    <h1 th:text="#{confirmacion.mensaje(${usuario.nombre})}">¡Alta correcta!</h1>
+
+    <dl>
+        <dt th:text="#{campo.email}">Email</dt>
+        <dd th:text="${usuario.email}">email</dd>
+        <dt th:text="#{campo.tecnologia}">Tecnología</dt>
+        <dd th:text="${usuario.tecnologia}">tecnología</dd>
+        <dt th:text="#{campo.niveles}">Niveles</dt>
+        <dd th:text="${#strings.listJoin(usuario.niveles, ', ')}">niveles</dd>
+    </dl>
+
+    <a class="volver" th:href="@{/}" th:text="#{confirmacion.volver}">&larr; Volver al inicio</a>
+</div>
+</body>
+</html>

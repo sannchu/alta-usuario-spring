@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{formulario.titulo}">Formulario de alta</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="claro">
+<div class="form-card">
+    <h1 th:text="#{formulario.titulo}">Formulario de alta</h1>
+
+    <!-- th:object enlaza el formulario con el DTO "usuario" del Model. -->
+    <form th:action="@{/alta}" th:object="${usuario}" method="post">
+        <label for="nombre" th:text="#{campo.nombre}">Nombre</label>
+        <input type="text" th:field="*{nombre}" th:errorclass="campo-error"
+               minlength="2" maxlength="50" required>
+        <!-- BindingResult guarda los errores por campo y th:errors los muestra junto a su control. -->
+        <div class="error-msg" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error en el nombre</div>
+
+        <label for="email" th:text="#{campo.email}">Email</label>
+        <input type="email" th:field="*{email}" th:errorclass="campo-error" required>
+        <div class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error en el email</div>
+
+        <label for="tecnologia" th:text="#{campo.tecnologia}">Tecnología</label>
+        <select th:field="*{tecnologia}" th:errorclass="campo-error" required>
+            <option value="" th:text="#{formulario.tecnologia.selecciona}">Selecciona una tecnología</option>
+            <!-- Las opciones las carga OpcionesService desde tecnologias.txt. -->
+            <option th:each="t : ${tecnologias}" th:value="${t}" th:text="${t}">Tecnología</option>
+        </select>
+        <div class="error-msg" th:if="${#fields.hasErrors('tecnologia')}" th:errors="*{tecnologia}">Selecciona una tecnología</div>
+
+        <label for="niveles" th:text="#{campo.niveles}">Nivel</label>
+        <!-- th:field genera el name correcto (niveles) y conserva todas las opciones seleccionadas. -->
+        <select th:field="*{niveles}" multiple required>
+            <option th:each="n : ${listaNiveles}" th:value="${n}" th:text="${n}">Nivel</option>
+        </select>
+        <div class="error-msg" th:if="${#fields.hasErrors('niveles')}" th:errors="*{niveles}">Selecciona al menos un nivel</div>
+
+        <button type="submit" th:text="#{formulario.enviar}">Enviar</button>
+    </form>
+</div>
+</body>
+</html>
